@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:3000
+###
+GET {{baseUrl}}/users HTTP/1.1
+
+###
+GET {{baseUrl}}/users/62112d1b2ccda808858fcadf HTTP/1.1
+
+###
+POST {{baseUrl}}/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "kayo",
+    "password": "123456",
+    "active": "1"
+}
+
+###
+PATCH {{baseUrl}}/users/62112d1b2ccda808858fcadf
+content-type: application/json
+
+{
+    "username": "sample",
+    "password": "123",
+    "active": "0"
+}
+
+
+###
+DELETE {{baseUrl}}/users/62112d1b2ccda808858fcadf
+
+
+###
+POST {{baseUrl}}/users/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "kayo",
+    "password": "12345"
+}
