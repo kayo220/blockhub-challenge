@@ -11,7 +11,7 @@ content-type: application/json
 
 {
     "username": "kayo",
-    "password": "123456",
+    "password": "12!@21312aA",
     "active": "1"
 }
 
@@ -20,14 +20,14 @@ PATCH {{baseUrl}}/users/62112d1b2ccda808858fcadf
 content-type: application/json
 
 {
-    "username": "sample",
-    "password": "123",
+    "username": "kayo",
+    "password": "123456",
     "active": "0"
 }
 
 
 ###
-DELETE {{baseUrl}}/users/62112d1b2ccda808858fcadf
+DELETE {{baseUrl}}/users/621148c4789112e987484b5c
 
 
 ###
@@ -35,6 +35,11 @@ POST {{baseUrl}}/users/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kayo",
-    "password": "12345"
+    "username": "kayo220",
+    "password": "12!@Abc123"
 }
+
+###
+DELETE {{baseUrl}}/users/delete/all HTTP/1.1
+content-type: application/json
+

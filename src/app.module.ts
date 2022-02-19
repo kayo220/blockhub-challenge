@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './app/users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://root:root@cluster0.p9wcd.mongodb.net/test'),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     UsersModule]
 
 })
