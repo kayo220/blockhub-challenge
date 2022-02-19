@@ -11,21 +11,21 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const user = new this.userModel(createUserDto);
-    return user.save();
+    return await user.save();
   }
 
-  findAll() {
-    return this.userModel.find();
+  async findAll() {
+    return await this.userModel.find();
   }
 
-  findOne(id: string) {
-    return this.userModel.findById(id);
+  async findOne(id: string) {
+    return await this.userModel.findById(id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userModel.findByIdAndUpdate({
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.userModel.findByIdAndUpdate({
       _id: id
     }, {
       $set: updateUserDto
@@ -34,26 +34,26 @@ export class UsersService {
     });
   }
 
-  remove(id: string) {
-    return this.userModel.deleteOne({
+  async remove(id: string) {
+    return await this.userModel.deleteOne({
       _id: id,
     }).exec();
   }
-  removeAll() {
-    return this.userModel.deleteMany({
+  async removeAll() {
+    return await this.userModel.deleteMany({
 
     })
   }
 
   async verifyUser(username: string, password: string): Promise<User> {
-    return this.userModel.findOne({
+    return await this.userModel.findOne({
       username: username,
       password: password
     })
   }
 
   async searchUserByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({
+    return await this.userModel.findOne({
       username: username
     })
   }

@@ -10,7 +10,7 @@ POST {{baseUrl}}/users HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kayo",
+    "username": "kayo2",
     "password": "12!@21312aA",
     "active": "1"
 }
@@ -31,15 +31,16 @@ DELETE {{baseUrl}}/users/621148c4789112e987484b5c
 
 
 ###
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kayo220",
-    "password": "12!@Abc123"
+    "username": "kayo2",
+    "password": "12!@21312aA"
 }
 
 ###
 DELETE {{baseUrl}}/users/delete/all HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjExNjEyNjRiYjA5ODYzYjllODQ0NTUiLCJ1c2VybmFtZSI6ImtheW8yIiwiaWF0IjoxNjQ1MzA4NDE3LCJleHAiOjE2NDUzMDg0Nzd9.G7DWf1GqjqPaFEerAZ15fF9sFumf3X_a4c_adKMaFR0
 
