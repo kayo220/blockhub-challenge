@@ -24,14 +24,16 @@ export class ProjectsService {
   }
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {
-    return await this.projectModel.findByIdAndUpdate({
-      _id: id
-    },
+    return await this.projectModel.findByIdAndUpdate(
+      {
+        _id: id
+      },
       {
         $set: updateProjectDto
-      }, {
-      new: true,
-    });
+      }, 
+      {
+        new: true,
+      });
   }
 
   async remove(id: string) {
