@@ -18,6 +18,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             throw new UnauthorizedException(MessagesHelper.WRONG_CREDENTIALS)
         }
+        if (!user.active) {
+            throw new UnauthorizedException(MessagesHelper.USER_NOT_ACTIVE)
+        }
         return user;
     }
 }

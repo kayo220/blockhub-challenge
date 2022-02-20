@@ -13,7 +13,7 @@ export class User {
     password: string;
 
     @Prop({ default: true })
-    active: string;
+    active: boolean;
 
 
 }

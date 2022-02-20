@@ -30,10 +30,8 @@ export class AuthService {
         }
         const isPasswordValid = compareSync(password, user.password);
         if (!isPasswordValid) {
-            console.log("Wrong password")
             return null;
         }
-        console.log("sending user")
         return user;
     }
 }

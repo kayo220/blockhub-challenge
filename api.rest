@@ -10,9 +10,9 @@ POST {{baseUrl}}/users HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kayo2",
+    "username": "kayo22",
     "password": "12!@21312aA",
-    "active": "1"
+    "active": false
 }
 
 ###
@@ -35,7 +35,7 @@ POST {{baseUrl}}/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kayo2",
+    "username": "kayo22",
     "password": "12!@21312aA"
 }
 
