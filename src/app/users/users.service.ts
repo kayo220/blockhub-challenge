@@ -21,7 +21,12 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return await this.userModel.findById(id);
+    try {
+      return await this.userModel.findById(id);
+    } catch (Error) {
+
+    }
+    return null;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

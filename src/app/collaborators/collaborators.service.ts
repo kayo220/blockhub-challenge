@@ -19,7 +19,12 @@ export class CollaboratorsService {
   }
 
   async findOne(id: string) {
-    return await this.collaboratorModel.findById(id);
+    try{
+      return await this.collaboratorModel.findOne({ _id: id });
+    }catch(Error){
+      //treating objectid cast error
+    }
+    return null;
   }
 
   async update(id: string, updateCollaboratorDto: UpdateCollaboratorDto) {

@@ -9,28 +9,28 @@ export class CollaboratorsController {
   constructor(private readonly collaboratorsService: CollaboratorsService) { }
 
   @Post()
-  create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
-    return this.collaboratorsService.create(createCollaboratorDto);
+  async create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
+    return await this.collaboratorsService.create(createCollaboratorDto);
   }
 
   @Get()
-  findAll() {
-    return this.collaboratorsService.findAll();
+  async findAll() {
+    return await this.collaboratorsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.collaboratorsService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.collaboratorsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCollaboratorDto: UpdateCollaboratorDto) {
-    return this.collaboratorsService.update(id, updateCollaboratorDto);
+  async update(@Param('id') id: string, @Body() updateCollaboratorDto: UpdateCollaboratorDto) {
+    return await this.collaboratorsService.update(id, updateCollaboratorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.collaboratorsService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.collaboratorsService.remove(id);
   }
 
   @UseGuards(AuthGuard('jwt'))

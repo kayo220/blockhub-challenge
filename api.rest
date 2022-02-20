@@ -67,6 +67,7 @@ content-type: application/json
     "active": false
 }
 
+@projectId = 62129373264f4f1921c29bcb
 ###
 PATCH {{baseUrl}}/projects/62126a039de8e5b859f594a6
 content-type: application/json
@@ -107,6 +108,7 @@ content-type: application/json
     "active": true
 }
 
+@collaboratorId = 62129398264f4f1921c29bce
 ###
 PATCH {{baseUrl}}/collaborators/6212800cb40a16d6fbb4a002
 content-type: application/json
@@ -126,7 +128,40 @@ DELETE {{baseUrl}}/collaborators/delete/all HTTP/1.1
 content-type: application/json
 Authorization: {{jwttoken}}
 
-
-
-
 ///////COLABORATORS-PROJECT
+
+###
+GET  {{baseUrl}}/collaborators-projects
+
+
+###
+GET {{baseUrl}}/collaborators-projects/62129c16cbc4b4080ea9b6e2 HTTP/1.1
+
+###
+POST {{baseUrl}}/collaborators-projects HTTP/1.1
+content-type: application/json
+
+{
+    "collaborator_id": "62129398264f4f1921c29bce",
+    "project_id": "62129373264f4f1921c29bcb",
+    "begin": "2002-02-02"    
+}
+
+PATCH {{baseUrl}}/collaborators-projects/6212800cb40a16d6fbb4a002
+content-type: application/json
+
+{
+    "name": "Kayo Santana",
+    "role": "Backend Developer",
+    "admission": "2021-03-02",
+    "active": true
+}
+
+###
+DELETE {{baseUrl}}/collaborators-projects/62129c16cbc4b4080ea9b6e2
+
+###
+DELETE {{baseUrl}}/collaborators-projects/delete/all HTTP/1.1
+content-type: application/json
+Authorization: {{jwttoken}}
+

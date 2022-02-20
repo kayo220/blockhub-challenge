@@ -5,6 +5,8 @@ export const MessagesHelper = {
     WRONG_CREDENTIALS: "Erro! As credênciais estão incorretas",
 
     PROJECT_ALREADY_EXISTS_ERROR: "Erro! O projeto já existe.",
+    PROJECT_NOT_FOUND: "Erro! O projeto informado não foi encontrado!",
+    COLLABORATOR_NOT_FOUND: "Erro! O colaborador informado não foi encontrado!"
 
 
 }

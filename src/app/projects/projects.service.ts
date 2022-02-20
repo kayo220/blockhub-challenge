@@ -19,8 +19,13 @@ export class ProjectsService {
     return await this.projectModel.find();
   }
 
-  async findOne(id: string) {
-    return await this.projectModel.findById(id);
+  async findOne(id: string): Promise<any> {
+    try {
+      return await this.projectModel.findById(id)
+    } catch (Error) {
+      //if catches an error it will return null (Treating ObjectID CAST ERROR)
+    }
+    return null;
   }
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {
@@ -30,7 +35,7 @@ export class ProjectsService {
       },
       {
         $set: updateProjectDto
-      }, 
+      },
       {
         new: true,
       });
@@ -44,7 +49,7 @@ export class ProjectsService {
     return await this.projectModel.deleteMany({});
   }
 
-  async searchProjectByName(name: string){
+  async searchProjectByName(name: string) {
     return await this.projectModel.findOne({
       name: name
     })
