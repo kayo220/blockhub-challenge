@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Project, ProjectDocument } from './entities/project.entity';
 
 @Injectable()
 export class ProjectsService {
-  create(createProjectDto: CreateProjectDto) {
-    return 'This action adds a new project';
+
+  constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) { }
+
+  async create(createProjectDto: CreateProjectDto) {
+    const project = new this.projectModel(createProjectDto);
+    return await project.save();
   }
 
-  findAll() {
-    return `This action returns all projects`;
+  async findAll() {
+    return await this.projectModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async findOne(id: string) {
+    return await this.projectModel.findById(id);
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: string, updateProjectDto: UpdateProjectDto) {
+    return await this.projectModel.findByIdAndUpdate({
+      _id: id
+    },
+      {
+        $set: updateProjectDto
+      }, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async remove(id: string) {
+    return await this.projectModel.deleteOne({ _id: id }).exec();
+  }
+
+  async removeAll() {
+    return await this.projectModel.deleteMany({});
   }
 }
