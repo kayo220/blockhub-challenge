@@ -41,4 +41,10 @@ export class ProjectsService {
   async removeAll() {
     return await this.projectModel.deleteMany({});
   }
+
+  async searchProjectByName(name: string){
+    return await this.projectModel.findOne({
+      name: name
+    })
+  }
 }

@@ -6,6 +6,7 @@ export type ProjectDocument = Project & Document;
 @Schema()
 export class Project {
 
+
     @Prop({ unique: true, required: true })
     name: string;
 

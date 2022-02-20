@@ -35,7 +35,7 @@ POST {{baseUrl}}/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kayo22",
+    "username": "kayo2",
     "password": "12!@21312aA"
 }
 
@@ -44,3 +44,42 @@ DELETE {{baseUrl}}/users/delete/all HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjExNjEyNjRiYjA5ODYzYjllODQ0NTUiLCJ1c2VybmFtZSI6ImtheW8yIiwiaWF0IjoxNjQ1MzA4NDE3LCJleHAiOjE2NDUzMDg0Nzd9.G7DWf1GqjqPaFEerAZ15fF9sFumf3X_a4c_adKMaFR0
 
+///PROJECTS REQUESTS
+
+###
+GET  {{baseUrl}}/projects
+
+
+###
+GET {{baseUrl}}/projects/62126a039de8e5b859f594a6 HTTP/1.1
+
+###
+POST {{baseUrl}}/projects HTTP/1.1
+content-type: application/json
+
+{
+    "name": "4444",
+    "begin": "2021-02-02",
+    "end": "2021-03-02",
+    "description": "Teste",
+    "active": false
+}
+
+###
+PATCH {{baseUrl}}/projects/62126a039de8e5b859f594a6
+content-type: application/json
+
+{
+    "name": "4444",
+    "end": "2021-03-02",
+    "description": "Teste",
+    "active": false
+}
+
+###
+DELETE {{baseUrl}}/projects/62126a039de8e5b859f594a6
+
+###
+DELETE {{baseUrl}}/projects/delete/all HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjExNmExZjc4ZjdlODFlMDA5ODgxN2UiLCJ1c2VybmFtZSI6ImtheW8yIiwiaWF0IjoxNjQ1Mzc1NTA0LCJleHAiOjE2NDUzNzU1NjR9.t3LdQaeFbp-7RCT0TJQmUZ0Fw4ZUK4i7OgYSrI_FaQY

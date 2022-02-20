@@ -4,4 +4,7 @@ export const MessagesHelper = {
     USER_NOT_ACTIVE: "Erro! O usuário não está ativo.",
     WRONG_CREDENTIALS: "Erro! As credênciais estão incorretas",
 
+    PROJECT_ALREADY_EXISTS_ERROR: "Erro! O projeto já existe.",
+
+
 }
