@@ -16,7 +16,6 @@ export class CollaboratorsProjectsController {
   @Post()
   async create(@Body() createCollaboratorsProjectDto: CreateCollaboratorsProjectDto) {
     const project = await this.projectsService.findOne(createCollaboratorsProjectDto.project_id);
-    console.log(project)
     if (!project) {
       throw new HttpException({
         status: 400,
@@ -30,6 +29,14 @@ export class CollaboratorsProjectsController {
         error: MessagesHelper.COLLABORATOR_NOT_FOUND,
       }, 400)
     }
+
+    if (!(await this.checkDateIsAvaliable(collaborator._id, new Date(createCollaboratorsProjectDto.begin), new Date(createCollaboratorsProjectDto.end)))) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.COLLABORATOR_IS_ALREADY_IN_A_PROJECT,
+      }, 400)
+    }
+
 
     return await this.collaboratorsProjectsService.create(createCollaboratorsProjectDto, project, collaborator);
   }
@@ -58,5 +65,31 @@ export class CollaboratorsProjectsController {
   @Delete("/delete/all")
   async removeAll() {
     return await this.collaboratorsProjectsService.removeAll();
+  }
+
+  @Get('/collaborator/:id')
+  async findManyByCollaborator(@Param('id') id: string) {
+    const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByCollaborator(id);
+
+    return projectsByCollaborator
+  }
+
+  @Get('/project/:id')
+  async findManyByProject(@Param('id') id: string) {
+    const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByProject(id);
+
+    return projectsByCollaborator
+  }
+
+  async checkDateIsAvaliable(idCollaborator: string, dateBegin: Date, dateEnd: Date) {
+    const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByCollaborator(idCollaborator);
+
+    let projectsByCollaboratorFilter = projectsByCollaborator.filter(element => {
+      if ((dateBegin <= element.begin && element.begin <= dateEnd) || (dateBegin <= element.end && element.end <= dateEnd)) {
+        return true
+      }
+      return false;
+    })//if no element is filtered the data given is avaliable to register a user in a project
+    return projectsByCollaboratorFilter.length == 0
   }
 }

@@ -15,7 +15,6 @@ export class CreateCollaboratorsProjectDto {
 
     @IsNotEmpty()
     @IsDateString()
-    @IsOptional()
-    end?: Date;
+    end: Date;
 
 }

@@ -6,7 +6,7 @@ export const MessagesHelper = {
 
     PROJECT_ALREADY_EXISTS_ERROR: "Erro! O projeto já existe.",
     PROJECT_NOT_FOUND: "Erro! O projeto informado não foi encontrado!",
-    COLLABORATOR_NOT_FOUND: "Erro! O colaborador informado não foi encontrado!"
-
+    COLLABORATOR_NOT_FOUND: "Erro! O colaborador informado não foi encontrado!",
+    COLLABORATOR_IS_ALREADY_IN_A_PROJECT: "Erro! O colaborador já está alocado em um projeto dentro dessa data"
 
 }

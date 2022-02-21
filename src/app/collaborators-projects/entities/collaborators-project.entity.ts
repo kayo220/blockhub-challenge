@@ -22,7 +22,7 @@ export class CollaboratorsProjects {
     @Prop({ required: true })
     begin: Date;
 
-    @Prop()
+    @Prop({required: true})
     end: Date;
 
     @Prop({ default: true })

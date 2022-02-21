@@ -12,9 +12,7 @@ export class CollaboratorsProjectsService {
   constructor(@InjectModel(CollaboratorsProjects.name) private collaboratorsProjectsModel: Model<CollaboratorsProjectsDocument>) { }
 
   async create(createCollaboratorsProjectDto: CreateCollaboratorsProjectDto, project: Project, collaborator: Collaborator) {
-    const collaboratorProject = new this.collaboratorsProjectsModel({ begin: createCollaboratorsProjectDto.begin, project: project, collaborator: collaborator })
-    console.log("collaboratorProject")
-    console.log(collaboratorProject)
+    const collaboratorProject = new this.collaboratorsProjectsModel({ ...createCollaboratorsProjectDto, project: project, collaborator: collaborator })
     return await collaboratorProject.save();
   }
 
@@ -49,5 +47,23 @@ export class CollaboratorsProjectsService {
 
   async removeAll() {
     return await this.collaboratorsProjectsModel.deleteMany();
+  }
+
+  async findManyByCollaborator(collaborator_id: string) {
+    try {
+      return await this.collaboratorsProjectsModel.find({ collaborator: collaborator_id }).populate('project').populate('collaborator').exec();
+    } catch (Error) {
+
+    }
+    return null
+  }
+
+  async findManyByProject(project_id: string) {
+    try {
+      return await this.collaboratorsProjectsModel.find({ project: project_id }).populate('project').populate('collaborator').exec();
+    } catch (Error) {
+
+    }
+    return null
   }
 }

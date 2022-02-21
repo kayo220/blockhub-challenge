@@ -38,4 +38,6 @@ export class CollaboratorsController {
   async removeAll() {
     return await this.collaboratorsService.removeAll();
   }
+
+
 }

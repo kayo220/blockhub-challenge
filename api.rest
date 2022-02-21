@@ -102,7 +102,7 @@ POST {{baseUrl}}/collaborators HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Testing Name",
+    "name": "Testing Name2",
     "role": "aa",
     "admission": "2021-03-02",
     "active": true
@@ -144,7 +144,8 @@ content-type: application/json
 {
     "collaborator_id": "62129398264f4f1921c29bce",
     "project_id": "62129373264f4f1921c29bcb",
-    "begin": "2002-02-02"    
+    "begin": "2002-03-16",
+    "end": "2002-03-20"
 }
 
 PATCH {{baseUrl}}/collaborators-projects/6212800cb40a16d6fbb4a002
@@ -165,3 +166,9 @@ DELETE {{baseUrl}}/collaborators-projects/delete/all HTTP/1.1
 content-type: application/json
 Authorization: {{jwttoken}}
 
+
+###
+GET {{baseUrl}}/collaborators-projects/collaborator/62129398264f4f1921c29bce HTTP/1.1
+
+###
+GET {{baseUrl}}/collaborators-projects/project/62129373264f4f1921c29bcb HTTP/1.1
