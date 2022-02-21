@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { truncate } from 'fs';
 import { MessagesHelper } from 'src/helpers/messages.helper';
 import { CollaboratorsService } from '../collaborators/collaborators.service';
@@ -9,11 +11,17 @@ import { CreateCollaboratorsProjectDto } from './dto/create-collaborators-projec
 import { UpdateCollaboratorsProjectDto } from './dto/update-collaborators-project.dto';
 
 @Controller('collaborators-projects')
+@ApiTags('collaborators-projects')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class CollaboratorsProjectsController {
   constructor(private readonly collaboratorsProjectsService: CollaboratorsProjectsService,
     private readonly collaboratorsService: CollaboratorsService,
     private readonly projectsService: ProjectsService) { }
 
+  @ApiOkResponse({ description: "Collaborator and Project relation created!" })
+  @ApiBadRequestResponse({ description: "Collaborator or Project not found!" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Post()
   async create(@Body() createCollaboratorsProjectDto: CreateCollaboratorsProjectDto) {
     const project = await this.projectsService.findOne(createCollaboratorsProjectDto.project_id);
@@ -42,16 +50,31 @@ export class CollaboratorsProjectsController {
     return await this.collaboratorsProjectsService.create(createCollaboratorsProjectDto, project, collaborator);
   }
 
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get()
   async findAll() {
     return await this.collaboratorsProjectsService.findAll();
   }
 
+  @ApiOkResponse()
+  @ApiBadRequestResponse({ description: "Project-Collaborattor was not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.collaboratorsProjectsService.findOne(id);
+    const collaboratorProject = await this.collaboratorsProjectsService.findOne(id);
+    if (!collaboratorProject) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.COLLABORATOR_PROJECT_NOT_FOUND,
+      }, 400)
+    }
+    return collaboratorProject
   }
 
+  @ApiOkResponse({ description: "Collaborator and Project relation updated!" })
+  @ApiBadRequestResponse({ description: "Project-Collaborattor was not found or Not able to update because collaborator is already in another project in the given date" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCollaboratorsProjectDto: UpdateCollaboratorsProjectDto) {
     const collaborator_project = await this.collaboratorsProjectsService.findOne(id);
@@ -72,24 +95,43 @@ export class CollaboratorsProjectsController {
     return await this.collaboratorsProjectsService.update(id, updateCollaboratorsProjectDto);
   }
 
+  @ApiOkResponse({ description: "Collaborator and Project relation removed!" })
+  @ApiBadRequestResponse({ description: "Project-Collaborattor was not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.collaboratorsProjectsService.remove(id);
+    const deleted = await this.collaboratorsProjectsService.remove(id)
+    if (!deleted) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.COLLABORATOR_PROJECT_NOT_FOUND,
+      }, 400)
+    }
+    return deleted;
   }
 
-  //@UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: "Collaborator and Project relation removed!" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Delete("/delete/all")
   async removeAll() {
     return await this.collaboratorsProjectsService.removeAll();
   }
 
+  @ApiOkResponse({ description: "Projects by colaborator was found" })
+  @ApiBadRequestResponse({ description: "Project by Collaborattor was not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get('/collaborator/:id')
   async findManyByCollaborator(@Param('id') id: string) {
     const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByCollaborator(id);
+    if (!projectsByCollaborator) {
 
+    }
     return projectsByCollaborator
   }
 
+  @ApiOkResponse({ description: "Collaborator and Project relation removed!" })
+  @ApiBadRequestResponse({ description: "Collaborators by project was not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get('/project/:id')
   async findManyByProject(@Param('id') id: string) {
     const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByProject(id);
@@ -97,6 +139,7 @@ export class CollaboratorsProjectsController {
     return projectsByCollaborator
   }
 
+  //method to verify if an collaborator is not working in a given date
   async checkDateIsAvaliable(idCollaborator: string, dateBegin: Date, dateEnd: Date, idProjectCollaborator?: string) {
     const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByCollaborator(idCollaborator);
     console.log(projectsByCollaborator)

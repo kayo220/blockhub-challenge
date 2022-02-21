@@ -42,7 +42,11 @@ export class CollaboratorsProjectsService {
   }
 
   async remove(id: string) {
-    return await this.collaboratorsProjectsModel.deleteOne({ _id: id });
+    try{
+      return await this.collaboratorsProjectsModel.deleteOne({ _id: id });
+    }catch(Error){
+      return null;
+    }
   }
 
   async removeAll() {

@@ -19,9 +19,9 @@ export class CollaboratorsService {
   }
 
   async findOne(id: string) {
-    try{
+    try {
       return await this.collaboratorModel.findOne({ _id: id });
-    }catch(Error){
+    } catch (Error) {
       //treating objectid cast error
     }
     return null;
@@ -42,7 +42,12 @@ export class CollaboratorsService {
   }
 
   async remove(id: string) {
-    return await this.collaboratorModel.deleteOne({ _id: id }).exec();
+    try{
+      return await this.collaboratorModel.deleteOne({ _id: id }).exec();
+    }catch(Error){
+
+    }
+    return null
   }
 
   async removeAll() {

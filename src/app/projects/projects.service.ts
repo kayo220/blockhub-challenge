@@ -42,7 +42,12 @@ export class ProjectsService {
   }
 
   async remove(id: string) {
-    return await this.projectModel.deleteOne({ _id: id }).exec();
+    try {
+      return await this.projectModel.deleteOne({ _id: id }).exec();
+    } catch (Error) {
+
+    }
+    return null
   }
 
   async removeAll() {
@@ -50,8 +55,13 @@ export class ProjectsService {
   }
 
   async searchProjectByName(name: string) {
-    return await this.projectModel.findOne({
-      name: name
-    })
+    try {
+      return await this.projectModel.findOne({
+        name: name
+      })
+    } catch (Error) {
+
+    }
+    return null
   }
 }

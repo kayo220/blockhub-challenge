@@ -30,19 +30,28 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.userModel.findByIdAndUpdate({
-      _id: id
-    }, {
-      $set: updateUserDto
-    }, {
-      new: true,
-    });
+    try {
+      return await this.userModel.findByIdAndUpdate({
+        _id: id
+      }, {
+        $set: updateUserDto
+      }, {
+        new: true,
+      });
+    } catch (Error) {
+      return null
+    }
   }
 
   async remove(id: string) {
-    return await this.userModel.deleteOne({
-      _id: id,
-    }).exec();
+    try {
+      return await this.userModel.deleteOne({
+        _id: id,
+      }).exec();
+    } catch (Error) {
+
+    }
+    return null
   }
   async removeAll() {
     return await this.userModel.deleteMany({

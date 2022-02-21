@@ -6,14 +6,19 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { hashSync } from 'bcrypt'
 import { MessagesHelper } from 'src/helpers/messages.helper';
 import { AuthGuard } from '@nestjs/passport';
-@Controller('users')
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
+@Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   async hashPassword(password: string) {
     return await hashSync(password, 10)
   }
+
+  @ApiOkResponse({ description: "User created" })
+  @ApiBadRequestResponse({ description: "Wrong Input" })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const searchUser = await this.usersService.searchUserByUsername(createUserDto.username);
@@ -27,27 +32,71 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse()
+  @ApiBadRequestResponse({ description: "User not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(id);
+    const user = await this.usersService.findOne(id);
+    if (!user) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.USER_NOT_FOUND,
+      }, 400)
+    }
+    return
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: "User updated" })
+  @ApiBadRequestResponse({ description: "User not found or Invalid Password Pattern" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     updateUserDto.password = await this.hashPassword(updateUserDto.password)
-    return await this.usersService.update(id, updateUserDto);
+    const updated = await this.usersService.update(id, updateUserDto);
+    if (!updated) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.USER_NOT_FOUND,
+      }, 400)
+    }
+    return updated
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: "User deleted" })
+  @ApiBadRequestResponse({ description: "User not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.usersService.remove(id);
+    const deleted = await this.usersService.remove(id);
+    if (!deleted) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.USER_NOT_FOUND,
+      }, 400)
+    }
+    return deleted
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: "All users were deleted" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @UseGuards(AuthGuard('jwt'))
   @Delete("/delete/all")
   async removeAll() {

@@ -103,14 +103,14 @@ content-type: application/json
 
 {
     "name": "Testing Name2",
-    "role": "aa",
+    "role": "a",
     "admission": "2021-03-02",
     "active": true
 }
 
 @collaboratorId = 62129398264f4f1921c29bce
 ###
-PATCH {{baseUrl}}/collaborators/6212800cb40a16d6fbb4a002
+PATCH {{baseUrl}}/collaborators/62129398264f4f1921c29bce
 content-type: application/json
 
 {
@@ -121,7 +121,7 @@ content-type: application/json
 }
 
 ###
-DELETE {{baseUrl}}/collaborators/62128028b40a16d6fbb4a004
+DELETE {{baseUrl}}/collaborators/6212bef1a9392f3485c4d64a
 
 ###
 DELETE {{baseUrl}}/collaborators/delete/all HTTP/1.1
@@ -149,11 +149,11 @@ content-type: application/json
 }
 
 ###
-PATCH {{baseUrl}}/collaborators-projects/62139d3a11b928b95ed062d0
+PATCH {{baseUrl}}/collaborators-projects/62139f7542f6dd4455c9b97e
 content-type: application/json
 
 {
-    "begin": "2002-03-22",
+    "begin": "2002-03-01",
     "end": "2002-03-28"
 }
 
