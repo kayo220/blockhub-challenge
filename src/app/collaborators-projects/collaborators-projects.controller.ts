@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
+import { truncate } from 'fs';
 import { MessagesHelper } from 'src/helpers/messages.helper';
 import { CollaboratorsService } from '../collaborators/collaborators.service';
 import { Project } from '../projects/entities/project.entity';
@@ -53,6 +54,21 @@ export class CollaboratorsProjectsController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCollaboratorsProjectDto: UpdateCollaboratorsProjectDto) {
+    const collaborator_project = await this.collaboratorsProjectsService.findOne(id);
+    if (!collaborator_project) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.COLLABORATOR_PROJECT_NOT_FOUND,
+      }, 400)
+    }
+    if (!(await this.checkDateIsAvaliable(collaborator_project.collaborator["_id"].toString(), new Date(updateCollaboratorsProjectDto.begin),
+      new Date(updateCollaboratorsProjectDto.end), id))) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.COLLABORATOR_IS_ALREADY_IN_A_PROJECT,
+      }, 400)
+    }
+
     return await this.collaboratorsProjectsService.update(id, updateCollaboratorsProjectDto);
   }
 
@@ -81,12 +97,16 @@ export class CollaboratorsProjectsController {
     return projectsByCollaborator
   }
 
-  async checkDateIsAvaliable(idCollaborator: string, dateBegin: Date, dateEnd: Date) {
+  async checkDateIsAvaliable(idCollaborator: string, dateBegin: Date, dateEnd: Date, idProjectCollaborator?: string) {
     const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByCollaborator(idCollaborator);
-
+    console.log(projectsByCollaborator)
     let projectsByCollaboratorFilter = projectsByCollaborator.filter(element => {
       if ((dateBegin <= element.begin && element.begin <= dateEnd) || (dateBegin <= element.end && element.end <= dateEnd)) {
-        return true
+        if (!idProjectCollaborator) {//only filters if is a different project
+          return true
+        } else if (idProjectCollaborator && element._id.toString() != idProjectCollaborator) {
+          return true
+        }
       }
       return false;
     })//if no element is filtered the data given is avaliable to register a user in a project
