@@ -7,6 +7,7 @@ import { hashSync } from 'bcrypt'
 import { MessagesHelper } from 'src/helpers/messages.helper';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import userView from './view/user.view';
 
 @Controller('users')
 @ApiTags('users')
@@ -29,7 +30,8 @@ export class UsersController {
       }, 400)
     }
     createUserDto.password = await this.hashPassword(createUserDto.password)
-    return await this.usersService.create(createUserDto);
+    const newUser = await this.usersService.create(createUserDto);
+    return userView.render(newUser);
   }
 
   @ApiBearerAuth()
@@ -38,7 +40,7 @@ export class UsersController {
   @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get()
   async findAll() {
-    return await this.usersService.findAll();
+    return userView.renderMany(await this.usersService.findAll());
   }
 
   @ApiBearerAuth()
@@ -55,7 +57,7 @@ export class UsersController {
         error: MessagesHelper.USER_NOT_FOUND,
       }, 400)
     }
-    return
+    return userView.render(user);
   }
 
   @ApiBearerAuth()
@@ -73,7 +75,7 @@ export class UsersController {
         error: MessagesHelper.USER_NOT_FOUND,
       }, 400)
     }
-    return updated
+    return userView.render(updated);
   }
 
   @ApiBearerAuth()
