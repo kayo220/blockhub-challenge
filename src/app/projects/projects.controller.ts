@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, UseGu
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { MessagesHelper } from 'src/helpers/messages.helper';
+import { MessagesHelper } from '../../helpers/messages.helper';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
@@ -65,7 +65,14 @@ export class ProjectsController {
         }, 400)
       }
     }
-    return await this.projectsService.update(id, updateProjectDto);
+    const newProject = await this.projectsService.update(id, updateProjectDto);
+    if(!newProject){
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.PROJECT_NOT_FOUND,
+      }, 400)
+    }
+    return newProject
   }
 
   @ApiOkResponse({ description: "Project deleted" })

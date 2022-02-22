@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export default {
     render(user: User & Document<any, any, any> & { _id: any; }) {
         return {
-            id: user._id,
+            _id: user._id,
             username: user.username,
             active: user.active
         };

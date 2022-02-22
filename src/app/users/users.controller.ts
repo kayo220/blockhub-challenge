@@ -2,9 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, UseGu
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { hashSync } from 'bcrypt'
-import { MessagesHelper } from 'src/helpers/messages.helper';
+import { MessagesHelper } from '../../helpers/messages.helper';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import userView from './view/user.view';
