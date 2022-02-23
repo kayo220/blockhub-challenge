@@ -44,6 +44,8 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+## Documentation with Swagger
+Run the app and open the localhost:3000/api route!
 
 ## Test
 
