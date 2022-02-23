@@ -13,6 +13,6 @@ import { ProjectsService } from '../projects/projects.service';
   imports: [MongooseModule.forFeature([{ name: CollaboratorsProjects.name, schema: CollaboratorsProjectsSchema }]),
     ProjectsModule, CollaboratorsModule],
   controllers: [CollaboratorsProjectsController],
-  providers: [CollaboratorsProjectsService, CollaboratorsService, ProjectsService]
+  providers: [CollaboratorsProjectsService]
 })
 export class CollaboratorsProjectsModule { }
