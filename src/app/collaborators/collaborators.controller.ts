@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { MessagesHelper } from 'src/helpers/messages.helper';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { MessagesHelper } from '../../helpers/messages.helper';
 import { CollaboratorsService } from './collaborators.service';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
@@ -31,7 +31,14 @@ export class CollaboratorsController {
   @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.collaboratorsService.findOne(id);
+    const collaborator = await this.collaboratorsService.findOne(id);
+    if (!collaborator) {
+      throw new HttpException({
+        status: 400,
+        error: MessagesHelper.COLLABORATOR_NOT_FOUND,
+      }, 400)
+    }
+    return collaborator;
   }
 
   @ApiOkResponse({ description: "Collaborator updated!" })
@@ -39,14 +46,15 @@ export class CollaboratorsController {
   @ApiUnauthorizedResponse({ description: "Unauthorized" })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCollaboratorDto: UpdateCollaboratorDto) {
-    const updateCollaborator = await this.collaboratorsService.findOne(id);
+    const updateCollaborator = await this.collaboratorsService.update(id, updateCollaboratorDto);;
     if (!updateCollaborator) {
       throw new HttpException({
         status: 400,
         error: MessagesHelper.COLLABORATOR_NOT_FOUND,
       }, 400)
     }
-    return await this.collaboratorsService.update(id, updateCollaboratorDto);
+
+    return updateCollaborator;
   }
 
   @ApiOkResponse({ description: "Collaborator deleted!" })

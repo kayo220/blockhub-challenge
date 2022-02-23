@@ -28,23 +28,28 @@ export class CollaboratorsService {
   }
 
   async update(id: string, updateCollaboratorDto: UpdateCollaboratorDto) {
-    return await this.collaboratorModel.findOneAndUpdate(
-      {
-        _id: id
-      },
-      {
-        $set: updateCollaboratorDto
-      },
-      {
-        new: true
-      }
-    );
+    try {
+      return await this.collaboratorModel.findOneAndUpdate(
+        {
+          _id: id
+        },
+        {
+          $set: updateCollaboratorDto
+        },
+        {
+          new: true
+        }
+      );
+    } catch (Error) {
+      
+    }
+    return null;
   }
 
   async remove(id: string) {
-    try{
+    try {
       return await this.collaboratorModel.deleteOne({ _id: id }).exec();
-    }catch(Error){
+    } catch (Error) {
 
     }
     return null
