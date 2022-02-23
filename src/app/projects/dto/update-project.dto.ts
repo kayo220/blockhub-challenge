@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, Length, Validate } from 'class-validator';
+import { IsBeforeConstraint } from '../../../helpers/decorator.date.helper';
 import { CreateProjectDto } from './create-project.dto';
 
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {
@@ -18,6 +19,7 @@ export class UpdateProjectDto extends PartialType(CreateProjectDto) {
     @IsNotEmpty()
     @IsDateString()
     @IsOptional()
+    @Validate(IsBeforeConstraint, ['end'])
     @ApiProperty({ required: false })
     begin?: Date;
 

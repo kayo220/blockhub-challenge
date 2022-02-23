@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, IsDateString, IsOptional } from "class-validator";
+import { IsString, IsNotEmpty, IsDateString, IsOptional, Validate } from "class-validator";
+import { IsBeforeConstraint } from "../../../helpers/decorator.date.helper";
 
 export class CreateCollaboratorsProjectDto {
     @IsString()
@@ -14,6 +15,7 @@ export class CreateCollaboratorsProjectDto {
 
     @IsNotEmpty()
     @IsDateString()
+    @Validate(IsBeforeConstraint, ['end'])
     @ApiProperty()
     begin: Date;
 
