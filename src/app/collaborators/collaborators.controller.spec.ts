@@ -4,6 +4,7 @@ import { CollaboratorsService } from './collaborators.service';
 
 describe('CollaboratorsController', () => {
   let controller: CollaboratorsController;
+
   let mockCollaboratorService = {
     id: 1,
     collaborator: [{

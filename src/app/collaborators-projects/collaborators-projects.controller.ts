@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, UseGu
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { truncate } from 'fs';
-import { MessagesHelper } from 'src/helpers/messages.helper';
+import { MessagesHelper } from '../../helpers/messages.helper';
 import { CollaboratorsService } from '../collaborators/collaborators.service';
 import { Project } from '../projects/entities/project.entity';
 import { ProjectsService } from '../projects/projects.service';
@@ -135,16 +135,15 @@ export class CollaboratorsProjectsController {
   @Get('/project/:id')
   async findManyByProject(@Param('id') id: string) {
     const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByProject(id);
-
     return projectsByCollaborator
   }
 
   //method to verify if an collaborator is not working in a given date
   async checkDateIsAvaliable(idCollaborator: string, dateBegin: Date, dateEnd: Date, idProjectCollaborator?: string) {
     const projectsByCollaborator = await this.collaboratorsProjectsService.findManyByCollaborator(idCollaborator);
-    console.log(projectsByCollaborator)
     let projectsByCollaboratorFilter = projectsByCollaborator.filter(element => {
-      if ((dateBegin <= element.begin && element.begin <= dateEnd) || (dateBegin <= element.end && element.end <= dateEnd)) {
+      if ((dateBegin >= element.begin && dateBegin <= element.end) || (dateEnd >= element.begin && dateEnd <= element.end) ||
+        (dateBegin <= element.end && dateEnd >= element.end)) {
         if (!idProjectCollaborator) {//only filters if is a different project
           return true
         } else if (idProjectCollaborator && element._id.toString() != idProjectCollaborator) {

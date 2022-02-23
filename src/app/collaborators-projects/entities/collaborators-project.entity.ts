@@ -2,8 +2,8 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Type } from "class-transformer";
 import mongoose from "mongoose";
 import { Document } from 'mongoose';
-import { Collaborator } from "src/app/collaborators/entities/collaborator.entity";
-import { Project } from "src/app/projects/entities/project.entity";
+import { Collaborator } from "../../collaborators/entities/collaborator.entity";
+import { Project } from "../../projects/entities/project.entity";
 
 export type CollaboratorsProjectsDocument = CollaboratorsProjects & Document;
 
@@ -22,7 +22,7 @@ export class CollaboratorsProjects {
     @Prop({ required: true })
     begin: Date;
 
-    @Prop({required: true})
+    @Prop({ required: true })
     end: Date;
 
     @Prop({ default: true })
